@@ -1,13 +1,21 @@
-import { IdpLoginButton } from "./ui/login-button";
+import { getServerSession } from "@self/lib/auth/auth-callbacks.server";
+import { GoogleLoginButton } from "@self/lib/components/google-login-btn";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function SignInPage() {
+  const session = await getServerSession();
+
+  if (session) {
+    return redirect("/hello");
+  }
+
   return (
     <div className="grid items-center justify-items-center min-h-screen p-8">
-      <main className="grid grid-flow-row gap-8 items-stretch justify-center">
-        <IdpLoginButton idp="Okta" />
-        <IdpLoginButton idp="Azure" />
-        <IdpLoginButton idp="AWS Cognito" />
-        <IdpLoginButton idp="GitHub" />
+      <main className="flex flex-col gap-8 items-stretch justify-center">
+        <GoogleLoginButton />
+        {/* <AuthProviderLoginButton idp="Azure" />
+        <AuthProviderLoginButton idp="AWS Cognito" />
+        <AuthProviderLoginButton idp="GitHub" /> */}
       </main>
     </div>
   );
